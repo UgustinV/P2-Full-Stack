@@ -13,7 +13,7 @@
     $oeuvreRequest->execute(['id' => $id]);
     $oeuvre = $oeuvreRequest->fetch();
 
-    if(is_null($oeuvre)) {
+    if(is_null($oeuvre) || empty($oeuvre)) {
         header('Location: index.php');
     }
 ?>
