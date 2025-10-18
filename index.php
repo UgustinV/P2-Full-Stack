@@ -3,7 +3,7 @@
     require 'bdd.php';
 
     $dbClient = connexion();
-    $oeuvresRequest = $dbClient->prepare('SELECT * FROM oeuvres');
+    $oeuvresRequest = $dbClient->prepare('SELECT id, titre, artiste, image FROM oeuvres');
     $oeuvresRequest->execute();
     $oeuvres = $oeuvresRequest->fetchAll();
 ?>
