@@ -1,4 +1,5 @@
 <?php
+include 'bdd.php';
 
 $formData = $_POST;
 
@@ -12,25 +13,22 @@ if(
         echo 'Quelque chose ne va pas dans le formulaire. Veuillez recommencer.';
         header('Location: ajouter.php');
         return;
-    }
+}
+else {
+    $titre = htmlspecialchars($_POST['titre']);
+    $artiste = htmlspecialchars($_POST['artiste']);
+    $image = htmlspecialchars($_POST['image']);
+    $description = htmlspecialchars($_POST['description']);
     
-    else {
-        include 'bdd.php';
+    $dbClient = connexion();
+    $insertOeuvre = $dbClient->prepare('INSERT INTO oeuvres(titre, artiste, image, description) VALUES(:titre, :artiste, :image, :description)');
+    $insertOeuvre->execute([
+        'titre' => $titre,
+        'artiste' => $artiste,
+        'image' => $image,
+        'description' => $description
+    ]);
 
-        $titre = htmlspecialchars($_POST['titre']);
-        $artiste = htmlspecialchars($_POST['artiste']);
-        $image = htmlspecialchars($_POST['image']);
-        $description = htmlspecialchars($_POST['description']);
-        
-        $dbClient = connexion();
-        $insertOeuvre = $dbClient->prepare('INSERT INTO oeuvres(titre, artiste, image, description) VALUES(:titre, :artiste, :image, :description)');
-        $insertOeuvre->execute([
-            'titre' => $titre,
-            'artiste' => $artiste,
-            'image' => $image,
-            'description' => $description
-        ]);
-
-        header('Location: oeuvre.php?id=' . $dbClient->lastInsertId());
-    }
+    header('Location: oeuvre.php?id=' . $dbClient->lastInsertId());
+}
 ?>
